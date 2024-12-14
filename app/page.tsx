@@ -54,11 +54,17 @@ const client = generateClient<Schema>();
 
 export default function App() {
   return (
-    <div className="p-4">
-      <h1>Amplify UI test</h1>
-      <div className="mt-4">
-        <StorageBrowser/>
-      </div>
-    </div>
+    <Authenticator>
+      {({ signOut, user }) => (
+        <main>
+          <div className="p-4">
+            <h1>Amplify UI test</h1>
+            <div className="mt-4">
+              <StorageBrowser/>
+            </div>
+          </div>
+        </main>
+      )}
+    </Authenticator>
   )
 }
