@@ -43,11 +43,22 @@ const theme = createTheme({
   components: [storageBrowserTheme],
 })
 
+// export default function App() {
+//   return (
+//     <View backgroundColor="background.tertiary" {...theme.containerProps()}>
+//       <StorageBrowser />
+//       <ThemeStyle theme={theme} />
+//     </View>
+//   );
+// }
+
 export default function App() {
   return (
-    <View backgroundColor="background.tertiary" {...theme.containerProps()}>
-      <StorageBrowser />
-      <ThemeStyle theme={theme} />
-    </View>
-  );
+    <div className="p-4">
+      <h1>Amplify UI test</h1>
+      <div className="mt-4">
+        <StorageBrowser/>
+      </div>
+    </div>
+  )
 }
