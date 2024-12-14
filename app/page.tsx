@@ -8,46 +8,33 @@ import { Amplify } from "aws-amplify";
 import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
 import { 
-  ThemeStyle,
   createTheme,
   defineComponentTheme,
-  Authenticator } from "@aws-amplify/ui-react";
-import { StorageBrowser } from '../components/StorageBrowser';
-
+  Authenticator,
+  AmplifyProvider
+} from "@aws-amplify/ui-react";
+import { View } from "@aws-amplify/ui-react";
+import { StorageBrowser } from "../components/StorageBrowser";
 
 const storageBrowserTheme = defineComponentTheme({
-  name: 'storage-browser'
-  theme: (tokens) => {
-    return {
-      _element: {
-        controls: {
-          flexDirection: 'ron-reverse',
-          backgroundColor: tokens.colors.background.primary,
-          padding: tokens.space.small,
-          borderRadius: tokens.radii.small
-        },
-        title: {
-          fontWeight: tokens.fontWeights.thin,
-        }
-      }
-    }
-  }
-})
+  name: "storage-browser",
+  theme: (tokens) => ({
+    wrapper: {
+      backgroundColor: tokens.colors.background.primary,
+      padding: tokens.space.small,
+      borderRadius: tokens.radii.small,
+    },
+    title: {
+      fontWeight: tokens.fontWeights.thin,
+    },
+  }),
+});
 
 const theme = createTheme({
-  name: 'may-theme',
-  primaryColor: 'green',
+  name: "may-theme",
+  primaryColor: "green",
   components: [storageBrowserTheme],
-})
-
-export default function Example() {
-  return (
-    <View backgroundColor="background.tertiary" {...theme.containerProps()} >
-      <StorageBrowser />
-      <ThemeStyle theme={theme}/>
-    </View>
-  )
-}
+});
 
 Amplify.configure(outputs);
 
@@ -57,28 +44,47 @@ export default function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
 
   function listTodos() {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
+    const subscription = client.models.Todo.observeQuery().subscribe({
+      next: (data) => setTodos(data.items || []),
+      error: (err) => console.error("Error fetching todos:", err),
     });
+    return () => subscription.unsubscribe();
+  }
+
+  function createTodo() {
+    const content = window.prompt("Enter Todo content:");
+    if (content) {
+      client.models.Todo.create({ content });
+    }
   }
 
   useEffect(() => {
-    listTodos();
+    const unsubscribe = listTodos();
+    return () => unsubscribe(); // Cleanup subscription on unmount
   }, []);
 
-  function createTodo() {
-    client.models.Todo.create({
-      content: window.prompt("Todo content"),
-    });
-  }
-
   return (
-        <main>
+    <AmplifyProvider theme={theme}>
+      <Authenticator>
+        {({ signOut, user }) => (
+          <main>
+            <h1>Hello {user?.username}</h1>
+            <button onClick={signOut}>Sign out</button>
 
-          {/* StorageBrowser Component */}
-          <h2>Your Files</h2>
-          <StorageBrowser />
+            <h2>Your Todos</h2>
+            <button onClick={createTodo}>Add Todo</button>
+            <ul>
+              {todos.map((todo, index) => (
+                <li key={index}>{todo.content}</li>
+              ))}
+            </ul>
 
-        </main>
+            {/* StorageBrowser Component */}
+            <h2>Your Files</h2>
+            <StorageBrowser />
+          </main>
+        )}
+      </Authenticator>
+    </AmplifyProvider>
   );
 }
