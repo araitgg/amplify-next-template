@@ -6,7 +6,8 @@ import type { Schema } from "@/amplify/data/resource";
 import "./../app/app.css";
 import { Amplify } from "aws-amplify";
 import outputs from "@/amplify_outputs.json";
-import "@aws-amplify/ui-react/styles.css";
+// import "@aws-amplify/ui-react/styles.css";
+import "@aws-amplify/ui-react-storage/styles.css";
 import { StorageBrowser } from "../components/StorageBrowser";
 import { Authenticator, components } from '@aws-amplify/ui-react';
 import { View } from "@aws-amplify/ui-react";
@@ -18,39 +19,44 @@ Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
 
-const storageBrowserTheme = defineComponentTheme({
-  name: 'storage-browser',
-  theme: (tokens) => {
-    return {
-      _element: {
-        controls: {
-          flexDirection: 'row-reverse',
-          backgroundColor: tokens.colors.background.primary,
-          padding: tokens.space.small,
-          borderRadius: tokens.radii.small,
-          width: '300px', // 固定の幅を指定
-          height: '100px', // 固定の高さを指定
-        },
-        title: {
-          fontWeight: tokens.fontWeights.thin,
-          fontSize: '16px', // フォントサイズを固定
-        }
-      }
-    }
-  }
-})
+//returnの中で、画面内、表示させたい箇所にこれを差し込む
+{/* S3 Storage Browser */}
+<StorageBrowser />
 
-const theme = createTheme({
-  name: 'my-theme',
-  primaryColor: 'green',
-  components: [storageBrowserTheme],
-})
 
-export default function App() {
-  return (
-    <View backgroundColor="background.tertiary" {...theme.containerProps()}>
-      <StorageBrowser />
-      <ThemeStyle theme={theme} />
-    </View>
-  );
-}
+
+
+
+// const storageBrowserTheme = defineComponentTheme({
+//   name: 'storage-browser',
+//   theme: (tokens) => {
+//     return {
+//       _element: {
+//         controls: {
+//           flexDirection: 'row-reverse',
+//           backgroundColor: tokens.colors.background.primary,
+//           padding: tokens.space.small,
+//           borderRadius: tokens.radii.small,
+//         },
+//         title: {
+//           fontWeight: tokens.fontWeights.thin,
+//         }
+//       }
+//     }
+//   }
+// })
+
+// const theme = createTheme({
+//   name: 'my-theme',
+//   primaryColor: 'green',
+//   components: [storageBrowserTheme],
+// })
+
+// export default function App() {
+//   return (
+//     <View backgroundColor="background.tertiary" {...theme.containerProps()}>
+//       <StorageBrowser />
+//       <ThemeStyle theme={theme} />
+//     </View>
+//   );
+// }
