@@ -19,6 +19,17 @@ Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
 
+export default function App() {
+  const fixedWidth = 800;
+
+  return (
+    <div style={{ width: `${fixedWidth}px`, margin: "0 auto" }}>
+      <StorageBrowser />
+    </div>
+  );
+}
+
+
 // const storageBrowserTheme = defineComponentTheme({
 //   name: 'storage-browser',
 //   theme: (tokens) => {
@@ -52,9 +63,3 @@ const client = generateClient<Schema>();
 //     </View>
 //   );
 // }
-
-export default function App() {
-  return (
-    <StorageBrowser />
-  );
-}
