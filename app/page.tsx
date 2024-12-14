@@ -14,18 +14,8 @@ import { ThemeStyle } from "@aws-amplify/ui-react/server";
 import { createTheme } from "@aws-amplify/ui-react";
 import { defineComponentTheme } from "@aws-amplify/ui-react/server";
 
-import {
-  FcAlphabeticalSortingAz,
-  FcAlphabeticalSortingZa,
-  FcMinus,
-  FcNext,
-  FcPrevious,
-  FcRefresh,
-  FcSearch,
-} from 'react-icons/fc';
-import { IconsProvider } from '@aws-amplify/ui-react';
-
 Amplify.configure(outputs);
+
 const client = generateClient<Schema>();
 
 const storageBrowserTheme = defineComponentTheme({
@@ -38,9 +28,12 @@ const storageBrowserTheme = defineComponentTheme({
           backgroundColor: tokens.colors.background.primary,
           padding: tokens.space.small,
           borderRadius: tokens.radii.small,
+          width: '300px', // 固定の幅を指定
+          height: '100px', // 固定の高さを指定
         },
         title: {
           fontWeight: tokens.fontWeights.thin,
+          fontSize: '16px', // フォントサイズを固定
         }
       }
     }
@@ -56,25 +49,7 @@ const theme = createTheme({
 export default function App() {
   return (
     <View backgroundColor="background.tertiary" {...theme.containerProps()}>
-      <IconsProvider
-      icons={{
-        storageBrowser: {
-          refresh: <FcRefresh />,
-          'sort-indeterminate': <FcMinus />,
-          'sort-ascending': <FcAlphabeticalSortingAz />,
-          'sort-descending': <FcAlphabeticalSortingZa />,
-        },
-        searchField: {
-          search: <FcSearch />,
-        },
-        pagination: {
-          next: <FcNext />,
-          previous: <FcPrevious />,
-        },
-      }}
-      >
-        <StorageBrowser />
-        </IconsProvider>
+      <StorageBrowser />
       <ThemeStyle theme={theme} />
     </View>
   );
