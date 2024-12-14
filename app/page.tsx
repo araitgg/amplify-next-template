@@ -14,57 +14,68 @@ import { ThemeStyle } from "@aws-amplify/ui-react/server";
 import { createTheme } from "@aws-amplify/ui-react";
 import { defineComponentTheme } from "@aws-amplify/ui-react/server";
 
-Amplify.configure(outputs);
+import {
+  FcAlphabeticalSortingAz,
+  FcAlphabeticalSortingZa,
+  FcMinus,
+  FcNext,
+  FcPrevious,
+  FcRefresh,
+  FcSearch,
+} from 'react-icons/fc';
+import { IconsProvider } from '@aws-amplify/ui-react';
 
+Amplify.configure(outputs);
 const client = generateClient<Schema>();
 
-// const storageBrowserTheme = defineComponentTheme({
-//   name: 'storage-browser',
-//   theme: (tokens) => {
-//     return {
-//       _element: {
-//         controls: {
-//           flexDirection: 'row-reverse',
-//           backgroundColor: tokens.colors.background.primary,
-//           padding: tokens.space.small,
-//           borderRadius: tokens.radii.small,
-//         },
-//         title: {
-//           fontWeight: tokens.fontWeights.thin,
-//         }
-//       }
-//     }
-//   }
-// })
+const storageBrowserTheme = defineComponentTheme({
+  name: 'storage-browser',
+  theme: (tokens) => {
+    return {
+      _element: {
+        controls: {
+          flexDirection: 'row-reverse',
+          backgroundColor: tokens.colors.background.primary,
+          padding: tokens.space.small,
+          borderRadius: tokens.radii.small,
+        },
+        title: {
+          fontWeight: tokens.fontWeights.thin,
+        }
+      }
+    }
+  }
+})
 
-// const theme = createTheme({
-//   name: 'my-theme',
-//   primaryColor: 'green',
-//   components: [storageBrowserTheme],
-// })
-
-// export default function App() {
-//   return (
-//     <View backgroundColor="background.tertiary" {...theme.containerProps()}>
-//       <StorageBrowser />
-//       <ThemeStyle theme={theme} />
-//     </View>
-//   );
-// }
+const theme = createTheme({
+  name: 'my-theme',
+  primaryColor: 'green',
+  components: [storageBrowserTheme],
+})
 
 export default function App() {
   return (
-    <Authenticator>
-      {({ signOut, user }) => (
-        <main>
-          <div className="p-4">
-            <h1>Amplify UI test</h1>
-            <div className="mt-4">
-              <StorageBrowser/>
-            </div>
-          </div>
-        </main>
-      )}
-    </Authenticator>
-  )
+    <View backgroundColor="background.tertiary" {...theme.containerProps()}>
+      <IconsProvider
+      icons={{
+        storageBrowser: {
+          refresh: <FcRefresh />,
+          'sort-indeterminate': <FcMinus />,
+          'sort-ascending': <FcAlphabeticalSortingAz />,
+          'sort-descending': <FcAlphabeticalSortingZa />,
+        },
+        searchField: {
+          search: <FcSearch />,
+        },
+        pagination: {
+          next: <FcNext />,
+          previous: <FcPrevious />,
+        },
+      }}
+      >
+        <StorageBrowser />
+        </IconsProvider>
+      <ThemeStyle theme={theme} />
+    </View>
+  );
 }
