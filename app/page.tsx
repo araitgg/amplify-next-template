@@ -7,8 +7,47 @@ import "./../app/app.css";
 import { Amplify } from "aws-amplify";
 import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
-import { Authenticator } from "@aws-amplify/ui-react";
+import { 
+  ThemeStyle,
+  createTheme,
+  defineComponentTheme,
+  Authenticator } from "@aws-amplify/ui-react";
 import { StorageBrowser } from '../components/StorageBrowser';
+
+
+const storageBrowserTheme = defineComponentTheme({
+  name: 'storage-browser'
+  theme: (tokens) => {
+    return {
+      _element: {
+        controls: {
+          flexDirection: 'ron-reverse',
+          backgroundColor: tokens.colors.background.primary,
+          padding: tokens.space.small,
+          borderRadius: tokens.radii.small
+        },
+        title: {
+          fontWeight: tokens.fontWeights.thin,
+        }
+      }
+    }
+  }
+})
+
+const theme = createTheme({
+  name: 'may-theme',
+  primaryColor: 'green',
+  components: [storageBrowserTheme],
+})
+
+export default function Example() {
+  return (
+    <View backgroundColor="background.tertiary" {...theme.containerProps()} >
+      <StorageBrowser />
+      <ThemeStyle theme={theme}/>
+    </View>
+  )
+}
 
 Amplify.configure(outputs);
 
