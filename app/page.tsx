@@ -18,30 +18,30 @@ Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
 
-const storageBrowserTheme = defineComponentTheme({
-  name: 'storage-browser',
-  theme: (tokens) => {
-    return {
-      _element: {
-        controls: {
-          flexDirection: 'row-reverse',
-          backgroundColor: tokens.colors.background.primary,
-          padding: tokens.space.small,
-          borderRadius: tokens.radii.small,
-        },
-        title: {
-          fontWeight: tokens.fontWeights.thin,
-        }
-      }
-    }
-  }
-})
+// const storageBrowserTheme = defineComponentTheme({
+//   name: 'storage-browser',
+//   theme: (tokens) => {
+//     return {
+//       _element: {
+//         controls: {
+//           flexDirection: 'row-reverse',
+//           backgroundColor: tokens.colors.background.primary,
+//           padding: tokens.space.small,
+//           borderRadius: tokens.radii.small,
+//         },
+//         title: {
+//           fontWeight: tokens.fontWeights.thin,
+//         }
+//       }
+//     }
+//   }
+// })
 
-const theme = createTheme({
-  name: 'my-theme',
-  primaryColor: 'green',
-  components: [storageBrowserTheme],
-})
+// const theme = createTheme({
+//   name: 'my-theme',
+//   primaryColor: 'green',
+//   components: [storageBrowserTheme],
+// })
 
 // export default function App() {
 //   return (
