@@ -19,14 +19,6 @@ Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
 
-//returnの中で、画面内、表示させたい箇所にこれを差し込む
-{/* S3 Storage Browser */}
-<StorageBrowser />
-
-
-
-
-
 // const storageBrowserTheme = defineComponentTheme({
 //   name: 'storage-browser',
 //   theme: (tokens) => {
@@ -60,3 +52,9 @@ const client = generateClient<Schema>();
 //     </View>
 //   );
 // }
+
+export default function App() {
+  return (
+    <StorageBrowser />
+  );
+}
